@@ -29,14 +29,13 @@ export class ProductComponent implements OnInit{
   paginator!:MatPaginator;
 
   getProduct(){
-this.productService.getProduct()
-    .subscribe((data:any)=>{
-      console.log("Respuesta de productos: ", data);
-      this.processProductResponse(data);
-    }), (error:any)=>{
-      console.log("Error en productos: ",error);
-    }
-
+    this.productService.getProduct()
+      .subscribe((data:any)=>{
+        console.log("respuesta productos: ", data);
+        this.processProductResponse(data);
+      }, (error:any) =>{
+        console.log("error: ",error);
+      })
   }
 
   processProductResponse(resp:any){
@@ -108,6 +107,16 @@ this.productService.getProduct()
     });
   }
 
+  buscar(name: string){
+    if (name.length === 0) {
+      return this.getProduct();
+    } else {
+      this.productService.getProductByName(name)
+        .subscribe((resp:any)=>{
+          this.processProductResponse(resp);
+        })
+    }
+  }
 }
 
 export interface ProductElement {
