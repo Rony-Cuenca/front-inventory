@@ -41,7 +41,12 @@ export class NewProductComponent implements OnInit{
       account:['',Validators.required],
       category:['',Validators.required],
       picture:['',Validators.required]
-    })
+    });
+
+    if (this.data!=null) {
+      this.updateForm(this.data);
+      this.estadoFormulario = "Actualizar";
+    }
   }
 
   getCategories(){
@@ -77,17 +82,37 @@ export class NewProductComponent implements OnInit{
     uploadImageData.append('account', data.account);
     uploadImageData.append('categoryId',data.category);
 
-    //CALL THE SERVICE TO SAVE A PRODUCT
-    this.productService.saveProduct(uploadImageData)
+    if (this.data != null) {
+      //update the product
+      this.productService.updateProduct(uploadImageData,this.data.id)
       .subscribe((data:any)=>{
         this.dialogRef.close(1);
       }, (error:any)=>{
         this.dialogRef.close(2);
       })
+    } else {
+      //CALL THE SERVICE TO SAVE A PRODUCT
+      this.productService.saveProduct(uploadImageData)
+      .subscribe((data:any)=>{
+        this.dialogRef.close(1);
+      }, (error:any)=>{
+        this.dialogRef.close(2);
+      })
+    }
   }
 
   onCancel(){
 this.dialogRef.close(3);
+  }
+
+  updateForm(data: any){
+    this.productForm = this.fb.group({
+      name:[data.name,Validators.required],
+      price:[data.price,Validators.required],
+      account:[data.account,Validators.required],
+      category:[data.category.id,Validators.required],
+      picture:['',Validators.required]
+    });
   }
 
 }
