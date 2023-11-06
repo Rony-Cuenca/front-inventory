@@ -2,8 +2,13 @@ table{
   width: 100%;
 }
 
+ul{
+  display: flex;
+}
+
 ul li{
   list-style: none;
+  margin-right: 10px;
 }
 
 .alinear{
@@ -23,3 +28,4 @@ mat-form-field{
 .mat-header-cell:nth-child(1){
   flex: 0 0 6%;;
 }
+
